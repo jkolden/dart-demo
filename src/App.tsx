@@ -61,11 +61,11 @@ const workflowStates = ['Not Submitted', 'Submitted', 'Awaiting HOFI Approval', 
 
 /* ─── Mock GL lines (7-segment CoA: Fund-BudgetRef-Dept-Account-Program-FundingSrc-Project) ── */
 const glLines = [
-  { id: 1, fund: '1230', budgetRef: '0000', dept: '15675', account: '11130', program: '0000', fundingSrc: '0000', project: '00000000', debit: 1000.00, credit: 0, class: 'Confirmed cash', description: 'Cash in Bank — State DHCS Reimbursement' },
-  { id: 2, fund: '1000', budgetRef: '2024', dept: '14565', account: '47535', program: '1200', fundingSrc: '3100', project: '00000000', debit: 1000.00, credit: 0, class: 'Confirmed cash', description: 'Federal Housing Authority Grant Revenue' },
-  { id: 3, fund: '1230', budgetRef: '0000', dept: '00000', account: '11130', program: '0000', fundingSrc: '0000', project: '00000000', debit: 0, credit: 0, class: 'Applied cash', description: 'Applied Cash — Permit Fee Offset' },
-  { id: 4, fund: '1000', budgetRef: '2024', dept: '15675', account: '47200', program: '0000', fundingSrc: '0000', project: '00000000', debit: 0, credit: 1000.00, class: 'Confirmed cash', description: 'Permit Fee Collections — December' },
-  { id: 5, fund: '2030', budgetRef: '2024', dept: '16890', account: '13100', program: '2100', fundingSrc: '3200', project: '00000000', debit: 0, credit: 1000.00, class: 'Receivable', description: 'Behavioral Health Services Receivable' },
+  { id: 1, fund: '1010', budgetRef: '0000', dept: '15675', account: '47535', program: '0000', fundingSrc: '0000', project: '00000000', debit: 0, credit: 45000.00, class: 'Confirmed cash', description: 'State Public Health Reimbursement' },
+  { id: 2, fund: '1010', budgetRef: '0000', dept: '14565', account: '47535', program: '1200', fundingSrc: '3100', project: '00000000', debit: 0, credit: 25000.00, class: 'Confirmed cash', description: 'Federal Housing Authority Grant' },
+  { id: 3, fund: '6114', budgetRef: '0000', dept: '00000', account: '80100', program: '0000', fundingSrc: '2001', project: 'PRG10042', debit: 15000.00, credit: 0, class: 'Applied cash', description: 'Capital Improvement — Road Resurfacing' },
+  { id: 4, fund: '1010', budgetRef: '2024', dept: '15675', account: '47200', program: '0000', fundingSrc: '0000', project: '00000000', debit: 0, credit: 22550.70, class: 'Receivable', description: 'Permit Fee Collections — December' },
+  { id: 5, fund: '2030', budgetRef: '2024', dept: '16890', account: '48100', program: '2100', fundingSrc: '3200', project: 'PRG20014', debit: 0, credit: 12000.00, class: 'Confirmed cash', description: 'Behavioral Health Services Revenue' },
 ];
 
 /* ─── Mock PNG lines (POETA: Project-Task-ExpType-ExpOrg-Contract-FundingSrc) ── */
