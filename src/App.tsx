@@ -59,20 +59,20 @@ const bankAccounts = [
 const batchStatuses = ['Incomplete', 'Pending Review', 'Ready for Approval', 'Complete'];
 const workflowStates = ['Not Submitted', 'Submitted', 'Awaiting HOFI Approval', 'Awaiting A&C Approval', 'Approved', 'Rejected'];
 
-/* ─── Mock GL lines ─────────────────────────────────────────────── */
+/* ─── Mock GL lines (7-segment CoA: Fund-BudgetRef-Dept-Account-Program-FundingSrc-Project) ── */
 const glLines = [
-  { id: 1, fund: '10100', org: '15675', account: '47535', project: '0000000', task: '000', award: '000000', fundingSource: '000000', debit: 0, credit: 45000.00, description: 'State Public Health Reimbursement' },
-  { id: 2, fund: '10100', org: '14565', account: '47535', project: '0000000', task: '000', award: '000000', fundingSource: '000000', debit: 0, credit: 25000.00, description: 'Federal Housing Authority Grant' },
-  { id: 3, fund: '61142', org: '00000', account: '80100', project: '1042789', task: '100', award: 'AWD-0891', fundingSource: '200100', debit: 15000.00, credit: 0, description: 'Capital Improvement — Road Resurfacing' },
-  { id: 4, fund: '10100', org: '15675', account: '47200', project: '0000000', task: '000', award: '000000', fundingSource: '000000', debit: 0, credit: 22550.70, description: 'Permit Fee Collections — December' },
-  { id: 5, fund: '20300', org: '16890', account: '48100', project: '2001456', task: '200', award: 'AWD-1234', fundingSource: '300200', debit: 0, credit: 12000.00, description: 'Behavioral Health Services Revenue' },
+  { id: 1, fund: '1230', budgetRef: '0000', dept: '15675', account: '11130', program: '0000', fundingSrc: '0000', project: '00000000', debit: 1000.00, credit: 0, class: 'Confirmed cash', description: 'Cash in Bank — State DHCS Reimbursement' },
+  { id: 2, fund: '1000', budgetRef: '2024', dept: '14565', account: '47535', program: '1200', fundingSrc: '3100', project: '00000000', debit: 1000.00, credit: 0, class: 'Confirmed cash', description: 'Federal Housing Authority Grant Revenue' },
+  { id: 3, fund: '1230', budgetRef: '0000', dept: '00000', account: '11130', program: '0000', fundingSrc: '0000', project: '00000000', debit: 0, credit: 0, class: 'Applied cash', description: 'Applied Cash — Permit Fee Offset' },
+  { id: 4, fund: '1000', budgetRef: '2024', dept: '15675', account: '47200', program: '0000', fundingSrc: '0000', project: '00000000', debit: 0, credit: 1000.00, class: 'Confirmed cash', description: 'Permit Fee Collections — December' },
+  { id: 5, fund: '2030', budgetRef: '2024', dept: '16890', account: '13100', program: '2100', fundingSrc: '3200', project: '00000000', debit: 0, credit: 1000.00, class: 'Receivable', description: 'Behavioral Health Services Receivable' },
 ];
 
-/* ─── Mock PNG lines ────────────────────────────────────────────── */
+/* ─── Mock PNG lines (POETA: Project-Task-ExpType-ExpOrg-Contract-FundingSrc) ── */
 const pngLines = [
-  { id: 1, project: '1042789', task: '100', award: 'AWD-0891', expenditureOrg: 'DPW', expenditureType: 'Labor', amount: 8500.00, hofi: 'DPW', description: 'Road Resurfacing — Labor Q4' },
-  { id: 2, project: '2001456', task: '200', award: 'AWD-1234', expenditureOrg: 'HHS', expenditureType: 'Supplies', amount: 3200.00, hofi: 'HHS', description: 'BHS Program Supplies' },
-  { id: 3, project: '1042789', task: '300', award: 'AWD-0891', expenditureOrg: 'DPW', expenditureType: 'Equipment', amount: 6500.00, hofi: 'DPW', description: 'Road Resurfacing — Equipment Rental' },
+  { id: 1, project: 'PRG10042', task: '1.0', expenditureType: 'Contract Services', expenditureOrg: 'Public Works', contract: 'DPW-24-301', fundingSource: 'Dept of Public Works', amount: 8500.00, hofi: 'DPW', description: 'Road Resurfacing — Contract Labor Q4' },
+  { id: 2, project: 'PRG20014', task: '2.0', expenditureType: 'Supplies', expenditureOrg: 'Behavioral Health', contract: 'HHS-20-101', fundingSource: 'Dept of Health & Human Services', amount: 3200.00, hofi: 'HHS', description: 'BHS Program Supplies' },
+  { id: 3, project: 'PRG10042', task: '3.0', expenditureType: 'Equipment Rental', expenditureOrg: 'Public Works', contract: 'DPW-24-301', fundingSource: 'Dept of Public Works', amount: 6500.00, hofi: 'DPW', description: 'Road Resurfacing — Equipment Rental' },
 ];
 
 /* ─── Mock AR Receipt lines ─────────────────────────────────────── */
@@ -455,12 +455,8 @@ function App() {
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Fund</th>
-                        <th>Org</th>
-                        <th>Account</th>
-                        <th>Project</th>
-                        <th>Task</th>
-                        <th>Award</th>
+                        <th>Account String</th>
+                        <th>Class</th>
                         <th className="rw-num">Debit</th>
                         <th className="rw-num">Credit</th>
                         <th>Description</th>
@@ -470,12 +466,8 @@ function App() {
                       {glLines.map(l => (
                         <tr key={l.id}>
                           <td>{l.id}</td>
-                          <td>{l.fund}</td>
-                          <td>{l.org}</td>
-                          <td>{l.account}</td>
-                          <td>{l.project}</td>
-                          <td>{l.task}</td>
-                          <td>{l.award}</td>
+                          <td className="rw-mono">{l.fund}-{l.budgetRef}-{l.dept}-{l.account}-{l.program}-{l.fundingSrc}-{l.project}</td>
+                          <td>{l.class}</td>
                           <td className="rw-num">{l.debit > 0 ? usd(l.debit) : '—'}</td>
                           <td className="rw-num">{l.credit > 0 ? usd(l.credit) : '—'}</td>
                           <td>{l.description}</td>
@@ -484,7 +476,7 @@ function App() {
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={7} className="rw-foot-label">Block Total</td>
+                        <td colSpan={3} className="rw-foot-label">Block Total</td>
                         <td className="rw-num">{usd(glLines.reduce((s, l) => s + l.debit, 0))}</td>
                         <td className="rw-num">{usd(glLines.reduce((s, l) => s + l.credit, 0))}</td>
                         <td>Net: {usd(glTotal)}</td>
@@ -508,9 +500,10 @@ function App() {
                         <th>#</th>
                         <th>Project</th>
                         <th>Task</th>
-                        <th>Award</th>
-                        <th>Exp Org</th>
                         <th>Exp Type</th>
+                        <th>Exp Org</th>
+                        <th>Contract</th>
+                        <th>Funding Source</th>
                         <th>HOFI</th>
                         <th className="rw-num">Amount</th>
                         <th>Description</th>
@@ -520,11 +513,12 @@ function App() {
                       {pngLines.map(l => (
                         <tr key={l.id}>
                           <td>{l.id}</td>
-                          <td>{l.project}</td>
+                          <td className="rw-mono">{l.project}</td>
                           <td>{l.task}</td>
-                          <td>{l.award}</td>
-                          <td>{l.expenditureOrg}</td>
                           <td>{l.expenditureType}</td>
+                          <td>{l.expenditureOrg}</td>
+                          <td className="rw-mono">{l.contract}</td>
+                          <td>{l.fundingSource}</td>
                           <td><span className="rw-hofi-tag">{l.hofi}</span></td>
                           <td className="rw-num">{usd(l.amount)}</td>
                           <td>{l.description}</td>
@@ -533,7 +527,7 @@ function App() {
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={7} className="rw-foot-label">Total</td>
+                        <td colSpan={8} className="rw-foot-label">Total</td>
                         <td className="rw-num">{usd(pngTotal)}</td>
                         <td />
                       </tr>
