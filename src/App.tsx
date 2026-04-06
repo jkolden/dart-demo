@@ -121,6 +121,29 @@ function App() {
   const pngTotal = useMemo(() => pngLines.reduce((s, l) => s + l.amount, 0), []);
   const arTotal = useMemo(() => arLines.reduce((s, l) => s + l.amount, 0), []);
 
+  /* donut chart segments */
+  const chartSegments = useMemo(() => {
+    const total = glTotal + pngTotal + arTotal;
+    if (total === 0) return [];
+    return [
+      { label: 'GL Lines', value: glTotal, color: '#0572ce', pct: (glTotal / total) * 100 },
+      { label: 'PNG Lines', value: pngTotal, color: '#0d7c66', pct: (pngTotal / total) * 100 },
+      { label: 'AR Receipts', value: arTotal, color: '#c74634', pct: (arTotal / total) * 100 },
+    ];
+  }, [glTotal, pngTotal, arTotal]);
+
+  const donutArcs = useMemo(() => {
+    const radius = 40;
+    const circumference = 2 * Math.PI * radius;
+    let offset = 0;
+    return chartSegments.map(seg => {
+      const dash = (seg.pct / 100) * circumference;
+      const arc = { ...seg, dashArray: `${dash} ${circumference - dash}`, dashOffset: -offset };
+      offset += dash;
+      return arc;
+    });
+  }, [chartSegments]);
+
   const handleChange = useCallback((key: keyof HeaderFields, value: string) => {
     if (locked) return;
     setFields(prev => {
@@ -316,42 +339,92 @@ function App() {
           </div>
         </section>
 
-        {/* ── Context Header (Bank Info) ── */}
-        <section className="rw-card">
-          <div className="rw-card-header">
-            <h2>Bank Deposit Context</h2>
-            <span className="rw-card-badge">HOFI-Restricted</span>
-          </div>
-          <div className="rw-form-grid rw-form-grid-3">
-            <label className="rw-field rw-span-2">
-              <span className="rw-label">Bank Name</span>
-              <select className="rw-select" value={fields.bankName} onChange={e => handleChange('bankName', e.target.value)} disabled={locked}>
-                {(matchingBanks.length > 0 ? matchingBanks : bankAccounts).map(b => (
-                  <option key={b.account} value={b.name}>{b.name} ({b.hofi})</option>
+        {/* ── Context + Distribution side-by-side ── */}
+        <div className="rw-two-col">
+          {/* ── Context Header (Bank Info) ── */}
+          <section className="rw-card">
+            <div className="rw-card-header">
+              <h2>Bank Deposit Context</h2>
+              <span className="rw-card-badge">HOFI-Restricted</span>
+            </div>
+            <div className="rw-form-grid rw-form-grid-2">
+              <label className="rw-field rw-span-2">
+                <span className="rw-label">Bank Name</span>
+                <select className="rw-select" value={fields.bankName} onChange={e => handleChange('bankName', e.target.value)} disabled={locked}>
+                  {(matchingBanks.length > 0 ? matchingBanks : bankAccounts).map(b => (
+                    <option key={b.account} value={b.name}>{b.name} ({b.hofi})</option>
+                  ))}
+                </select>
+              </label>
+              <label className="rw-field">
+                <span className="rw-label">Bank Account</span>
+                <input className="rw-input" value={fields.bankAccount} readOnly />
+              </label>
+              <label className="rw-field">
+                <span className="rw-label">Bank Date</span>
+                <input className="rw-input" type="date" value={fields.bankDate} onChange={e => handleChange('bankDate', e.target.value)} readOnly={locked} />
+              </label>
+              <label className="rw-field">
+                <span className="rw-label">Bank Reference</span>
+                <input className="rw-input" value={fields.bankReference} onChange={e => handleChange('bankReference', e.target.value)} readOnly={locked} />
+              </label>
+              <label className="rw-field">
+                <span className="rw-label">Bank Amount</span>
+                <input className="rw-input rw-amount" type="text" value={usd(parseFloat(fields.bankAmount) || 0)} onChange={e => handleChange('bankAmount', e.target.value.replace(/[^0-9.]/g, ''))} readOnly={locked} />
+              </label>
+            </div>
+            {matchingBanks.length > 0 && !locked && (
+              <p className="rw-hint">Showing bank accounts where Owning HOFI matches preparer HOFI ({fields.preparerHOFI}).</p>
+            )}
+          </section>
+
+          {/* ── Distribution Chart ── */}
+          <section className="rw-card rw-chart-card">
+            <div className="rw-card-header">
+              <h2>Deposit Distribution</h2>
+              <span className="rw-card-badge">Multi-Module</span>
+            </div>
+            <div className="rw-chart-layout">
+              <svg viewBox="0 0 100 100" className="rw-donut">
+                {/* background ring */}
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#e6e2de" strokeWidth="12" />
+                {/* data arcs */}
+                {donutArcs.map(arc => (
+                  <circle
+                    key={arc.label}
+                    cx="50" cy="50" r="40"
+                    fill="none"
+                    stroke={arc.color}
+                    strokeWidth="12"
+                    strokeDasharray={arc.dashArray}
+                    strokeDashoffset={arc.dashOffset}
+                    strokeLinecap="butt"
+                    transform="rotate(-90 50 50)"
+                    className="rw-donut-arc"
+                  />
                 ))}
-              </select>
-            </label>
-            <label className="rw-field">
-              <span className="rw-label">Bank Account</span>
-              <input className="rw-input" value={fields.bankAccount} readOnly />
-            </label>
-            <label className="rw-field">
-              <span className="rw-label">Bank Date</span>
-              <input className="rw-input" type="date" value={fields.bankDate} onChange={e => handleChange('bankDate', e.target.value)} readOnly={locked} />
-            </label>
-            <label className="rw-field">
-              <span className="rw-label">Bank Reference</span>
-              <input className="rw-input" value={fields.bankReference} onChange={e => handleChange('bankReference', e.target.value)} readOnly={locked} />
-            </label>
-            <label className="rw-field">
-              <span className="rw-label">Bank Amount</span>
-              <input className="rw-input rw-amount" type="text" value={usd(parseFloat(fields.bankAmount) || 0)} onChange={e => handleChange('bankAmount', e.target.value.replace(/[^0-9.]/g, ''))} readOnly={locked} />
-            </label>
-          </div>
-          {matchingBanks.length > 0 && !locked && (
-            <p className="rw-hint">Showing bank accounts where Owning HOFI matches preparer HOFI ({fields.preparerHOFI}).</p>
-          )}
-        </section>
+                {/* center text */}
+                <text x="50" y="47" textAnchor="middle" className="rw-donut-total-label">Total</text>
+                <text x="50" y="57" textAnchor="middle" className="rw-donut-total-value">
+                  {usd(glTotal + pngTotal + arTotal)}
+                </text>
+              </svg>
+              <div className="rw-chart-legend">
+                {chartSegments.map(seg => (
+                  <div key={seg.label} className="rw-legend-item">
+                    <span className="rw-legend-swatch" style={{ background: seg.color }} />
+                    <div className="rw-legend-detail">
+                      <span className="rw-legend-label">{seg.label}</span>
+                      <span className="rw-legend-value">{usd(seg.value)}</span>
+                      <span className="rw-legend-pct">{seg.pct.toFixed(1)}%</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p className="rw-hint">DART provides a single point of entry interfacing with GL, Projects &amp; Grants, and Accounts Receivables.</p>
+          </section>
+        </div>
 
         {/* ── Tabs ── */}
         <section className="rw-card rw-card-flush">
