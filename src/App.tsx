@@ -23,7 +23,7 @@ function PasswordGate({ onAuth }: { onAuth: () => void }) {
       <form className="rw-gate-card" onSubmit={handleSubmit}>
         <div className="rw-gate-logo">Oracle Cloud</div>
         <h1 className="rw-gate-title">DART Demo</h1>
-        <p className="rw-gate-subtitle">County of San Diego — Sierra-Cedar</p>
+        <p className="rw-gate-subtitle">County of San Diego</p>
         <input
           className="rw-gate-input"
           type="password"
@@ -647,7 +647,7 @@ function DartApp() {
       {/* ── Footer ── */}
       <footer className="rw-footer">
         <span>DART Deposit Batch Demo — County of San Diego</span>
-        <span>Sierra-Cedar &middot; Interactive Prototype &middot; Not for Production Use</span>
+        <span>Interactive Prototype &middot; Not for Production Use</span>
       </footer>
     </div>
   );
