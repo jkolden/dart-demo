@@ -1,5 +1,44 @@
 import { useMemo, useState, useCallback } from 'react';
 
+/* ─── Password gate ────────────────────────────────────────────── */
+const DEMO_PASS = 'dart2026';
+
+function PasswordGate({ onAuth }: { onAuth: () => void }) {
+  const [value, setValue] = useState('');
+  const [error, setError] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (value === DEMO_PASS) {
+      sessionStorage.setItem('dart-auth', '1');
+      onAuth();
+    } else {
+      setError(true);
+      setValue('');
+    }
+  };
+
+  return (
+    <div className="rw-gate">
+      <form className="rw-gate-card" onSubmit={handleSubmit}>
+        <div className="rw-gate-logo">Oracle Cloud</div>
+        <h1 className="rw-gate-title">DART Demo</h1>
+        <p className="rw-gate-subtitle">County of San Diego — Sierra-Cedar</p>
+        <input
+          className="rw-gate-input"
+          type="password"
+          placeholder="Enter demo password"
+          value={value}
+          onChange={e => { setValue(e.target.value); setError(false); }}
+          autoFocus
+        />
+        {error && <span className="rw-gate-error">Incorrect password</span>}
+        <button className="rw-btn rw-btn-primary rw-gate-btn" type="submit">Enter</button>
+      </form>
+    </div>
+  );
+}
+
 /* ─── Types ─────────────────────────────────────────────────────── */
 type HeaderFields = {
   batchNumber: string;
@@ -106,6 +145,14 @@ const usd = (n: number) => n.toLocaleString('en-US', { style: 'currency', curren
 
 /* ─── App ───────────────────────────────────────────────────────── */
 function App() {
+  const [authed, setAuthed] = useState(() => sessionStorage.getItem('dart-auth') === '1');
+
+  if (!authed) return <PasswordGate onAuth={() => setAuthed(true)} />;
+
+  return <DartApp />;
+}
+
+function DartApp() {
   const [fields, setFields] = useState<HeaderFields>(initialState);
   const [locked, setLocked] = useState(false);
   const [activeTab, setActiveTab] = useState<'GL Lines' | 'PNG Lines' | 'AR Receipt Lines'>('GL Lines');
