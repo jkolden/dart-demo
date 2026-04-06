@@ -103,8 +103,8 @@ const glLines = [
   { id: 1, fund: '1010', budgetRef: '0000', dept: '15675', account: '47535', program: '0000', fundingSrc: '0000', project: '00000000', debit: 0, credit: 45000.00, class: 'Confirmed cash', description: 'State Public Health Reimbursement' },
   { id: 2, fund: '1010', budgetRef: '0000', dept: '14565', account: '47535', program: '1200', fundingSrc: '3100', project: '00000000', debit: 0, credit: 25000.00, class: 'Confirmed cash', description: 'Federal Housing Authority Grant' },
   { id: 3, fund: '6114', budgetRef: '0000', dept: '00000', account: '80100', program: '0000', fundingSrc: '2001', project: 'PRG10042', debit: 15000.00, credit: 0, class: 'Applied cash', description: 'Capital Improvement — Road Resurfacing' },
-  { id: 4, fund: '1010', budgetRef: '2024', dept: '15675', account: '47200', program: '0000', fundingSrc: '0000', project: '00000000', debit: 0, credit: 22550.70, class: 'Receivable', description: 'Permit Fee Collections — December' },
-  { id: 5, fund: '2030', budgetRef: '2024', dept: '16890', account: '48100', program: '2100', fundingSrc: '3200', project: 'PRG20014', debit: 0, credit: 12000.00, class: 'Confirmed cash', description: 'Behavioral Health Services Revenue' },
+  { id: 4, fund: '1010', budgetRef: '2026', dept: '15675', account: '47200', program: '0000', fundingSrc: '0000', project: '00000000', debit: 0, credit: 22550.70, class: 'Receivable', description: 'Permit Fee Collections — March' },
+  { id: 5, fund: '2030', budgetRef: '2026', dept: '16890', account: '48100', program: '2100', fundingSrc: '3200', project: 'PRG20014', debit: 0, credit: 12000.00, class: 'Confirmed cash', description: 'Behavioral Health Services Revenue' },
 ];
 
 /* ─── Mock PNG lines (POETA: Project-Task-ExpType-ExpOrg-Contract-FundingSrc) ── */
@@ -116,9 +116,9 @@ const pngLines = [
 
 /* ─── Mock AR Receipt lines ─────────────────────────────────────── */
 const arLines = [
-  { id: 1, receiptNumber: 'AR-DART-000001-01', customer: 'State of California — DHCS', amount: 45000.00, receiptDate: '2024-12-27', status: 'Applied', dartBatch: 'DART-000001' },
-  { id: 2, receiptNumber: 'AR-DART-000001-02', customer: 'US Dept of Housing & Urban Dev', amount: 25000.00, receiptDate: '2024-12-27', status: 'Applied', dartBatch: 'DART-000001' },
-  { id: 3, receiptNumber: 'AR-DART-000001-03', customer: 'San Diego County Permits', amount: 22550.70, receiptDate: '2024-12-27', status: 'Unapplied', dartBatch: 'DART-000001' },
+  { id: 1, receiptNumber: 'AR-DART-000001-01', customer: 'State of California — DHCS', amount: 45000.00, receiptDate: '2026-03-27', status: 'Applied', dartBatch: 'DART-000001' },
+  { id: 2, receiptNumber: 'AR-DART-000001-02', customer: 'US Dept of Housing & Urban Dev', amount: 25000.00, receiptDate: '2026-03-27', status: 'Applied', dartBatch: 'DART-000001' },
+  { id: 3, receiptNumber: 'AR-DART-000001-03', customer: 'San Diego County Permits', amount: 22550.70, receiptDate: '2026-03-27', status: 'Unapplied', dartBatch: 'DART-000001' },
 ];
 
 /* ─── Initial form state ────────────────────────────────────────── */
@@ -126,7 +126,7 @@ const initialState: HeaderFields = {
   batchNumber: 'DART-000001',
   batchCategory: 'Deposit',
   batchType: 'Swept Cash ZBA',
-  batchName: 'AUDITMSCRT27DEC2024.DEMO',
+  batchName: 'AUDITMSCRT27MAR2026.DEMO',
   preparerOrganization: 'AUD',
   preparerName: 'Moana Wavecrest',
   preparerHOFI: 'AUD',
@@ -135,7 +135,7 @@ const initialState: HeaderFields = {
   workflowStatus: 'Not Submitted',
   bankName: 'County of SD Pooled Cash — Wells Fargo',
   bankAccount: '4021-7789-0001',
-  bankDate: '2024-12-27',
+  bankDate: '2026-03-27',
   bankReference: '0005794549XF',
   bankAmount: '119550.70',
 };
