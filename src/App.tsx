@@ -345,7 +345,7 @@ function App() {
             </label>
             <label className="rw-field">
               <span className="rw-label">Bank Amount</span>
-              <input className="rw-input rw-amount" type="text" value={fields.bankAmount} onChange={e => handleChange('bankAmount', e.target.value)} readOnly={locked} />
+              <input className="rw-input rw-amount" type="text" value={usd(parseFloat(fields.bankAmount) || 0)} onChange={e => handleChange('bankAmount', e.target.value.replace(/[^0-9.]/g, ''))} readOnly={locked} />
             </label>
           </div>
           {matchingBanks.length > 0 && !locked && (
