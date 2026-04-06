@@ -455,7 +455,13 @@ function App() {
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Account String</th>
+                        <th>Fund</th>
+                        <th>Budget Ref</th>
+                        <th>Dept</th>
+                        <th>Account</th>
+                        <th>Program</th>
+                        <th>Funding Src</th>
+                        <th>Project</th>
                         <th>Class</th>
                         <th className="rw-num">Debit</th>
                         <th className="rw-num">Credit</th>
@@ -466,7 +472,13 @@ function App() {
                       {glLines.map(l => (
                         <tr key={l.id}>
                           <td>{l.id}</td>
-                          <td className="rw-mono">{l.fund}-{l.budgetRef}-{l.dept}-{l.account}-{l.program}-{l.fundingSrc}-{l.project}</td>
+                          <td>{l.fund}</td>
+                          <td>{l.budgetRef}</td>
+                          <td>{l.dept}</td>
+                          <td>{l.account}</td>
+                          <td>{l.program}</td>
+                          <td>{l.fundingSrc}</td>
+                          <td>{l.project}</td>
                           <td>{l.class}</td>
                           <td className="rw-num">{l.debit > 0 ? usd(l.debit) : '—'}</td>
                           <td className="rw-num">{l.credit > 0 ? usd(l.credit) : '—'}</td>
@@ -476,7 +488,7 @@ function App() {
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={3} className="rw-foot-label">Block Total</td>
+                        <td colSpan={9} className="rw-foot-label">Block Total</td>
                         <td className="rw-num">{usd(glLines.reduce((s, l) => s + l.debit, 0))}</td>
                         <td className="rw-num">{usd(glLines.reduce((s, l) => s + l.credit, 0))}</td>
                         <td>Net: {usd(glTotal)}</td>
@@ -513,11 +525,11 @@ function App() {
                       {pngLines.map(l => (
                         <tr key={l.id}>
                           <td>{l.id}</td>
-                          <td className="rw-mono">{l.project}</td>
+                          <td>{l.project}</td>
                           <td>{l.task}</td>
                           <td>{l.expenditureType}</td>
                           <td>{l.expenditureOrg}</td>
-                          <td className="rw-mono">{l.contract}</td>
+                          <td>{l.contract}</td>
                           <td>{l.fundingSource}</td>
                           <td><span className="rw-hofi-tag">{l.hofi}</span></td>
                           <td className="rw-num">{usd(l.amount)}</td>
