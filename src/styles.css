@@ -462,7 +462,6 @@ body { background: var(--rw-bg); }
   font-size: 13px;
   font-weight: 700;
   color: var(--rw-text);
-  font-family: var(--rw-mono);
   font-variant-numeric: tabular-nums;
 }
 .rw-legend-pct {
@@ -672,7 +671,6 @@ body { background: var(--rw-bg); }
 .rw-num {
   text-align: right;
   font-variant-numeric: tabular-nums;
-  font-family: var(--rw-mono);
   font-size: 13px;
 }
 .rw-foot-label {
