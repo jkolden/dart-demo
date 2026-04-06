@@ -321,7 +321,7 @@ body { background: var(--rw-bg); }
   letter-spacing: 0.06em;
 }
 
-/* ═══ FORM GRID — Redwood bottom-border inputs ═════════════════════ */
+/* ═══ FORM GRID — Redwood Fusion-style bordered inputs ═════════════ */
 .rw-form-grid {
   display: grid;
   gap: 14px 20px;
@@ -333,7 +333,16 @@ body { background: var(--rw-bg); }
 .rw-field {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0;
+  background: #ffffff;
+  border: 1px solid var(--rw-neutral-50);
+  border-radius: var(--rw-radius);
+  padding: 8px 12px 6px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.rw-field:focus-within {
+  border-color: var(--rw-brand);
+  box-shadow: 0 0 0 1px var(--rw-brand);
 }
 .rw-label {
   font-size: 11px;
@@ -341,20 +350,19 @@ body { background: var(--rw-bg); }
   color: var(--rw-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  line-height: 1.2;
 }
 
-/* Redwood-style inputs: bottom-border, clean */
+/* Redwood Fusion inputs: full bordered container, clean interior */
 .rw-input, .rw-select {
-  height: 34px;
+  height: 26px;
   border: none;
-  border-bottom: 1px solid var(--rw-neutral-50);
   border-radius: 0;
-  padding: 0 2px;
+  padding: 0;
   font-size: 13px;
   color: var(--rw-text);
   background: transparent;
   outline: none;
-  transition: border-color 0.2s;
   width: 100%;
 }
 .rw-select {
@@ -362,22 +370,16 @@ body { background: var(--rw-bg); }
   cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23697778' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 4px center;
-  padding-right: 22px;
-}
-.rw-input:focus, .rw-select:focus {
-  border-bottom-color: var(--rw-brand);
-  border-bottom-width: 2px;
+  background-position: right 0 center;
+  padding-right: 18px;
 }
 .rw-input:read-only {
   color: var(--rw-text-secondary);
-  border-bottom-style: dashed;
 }
 .rw-select:disabled {
   color: var(--rw-text-muted);
   opacity: 0.7;
   cursor: default;
-  border-bottom-style: dashed;
 }
 .rw-hofi {
   font-weight: 700;
