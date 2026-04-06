@@ -592,116 +592,124 @@ body { background: var(--rw-bg); }
 
 /* ═══ TAB PANEL ════════════════════════════════════════════════════ */
 .rw-tab-panel {
-  padding: 16px 24px 20px;
+  padding: 0;
+}
+.rw-tab-panel > .rw-hint {
+  padding: 12px 24px 16px;
 }
 .rw-table-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 16px 24px 8px;
 }
 .rw-table-title {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--rw-text);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 .rw-row-count {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--rw-text-muted);
+  background: var(--rw-neutral-30);
+  padding: 2px 10px;
+  border-radius: 10px;
 }
 
-/* ═══ TABLE — Redwood clean data grid ══════════════════════════════ */
+/* ═══ TABLE — Redwood list-card style ══════════════════════════════ */
 .rw-table-wrap {
   overflow-x: auto;
-  border: 1px solid var(--rw-neutral-40);
-  border-radius: var(--rw-radius);
 }
 .rw-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 13px;
+}
+.rw-table thead {
+  border-bottom: 1px solid var(--rw-neutral-40);
 }
 .rw-table th {
   text-align: left;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-size: 11px;
+  font-weight: 600;
   color: var(--rw-slate-100);
-  padding: 8px 10px;
-  background: var(--rw-neutral-20);
-  border-bottom: 1px solid var(--rw-neutral-40);
+  padding: 12px 16px;
+  background: transparent;
   white-space: nowrap;
-  position: sticky;
-  top: 0;
 }
 .rw-table td {
-  padding: 8px 10px;
+  padding: 16px 16px;
   border-bottom: 1px solid var(--rw-neutral-30);
   color: var(--rw-text);
   vertical-align: middle;
+  line-height: 1.4;
 }
-/* Zebra striping — Redwood style */
+/* Alternating backgrounds — Redwood list style */
 .rw-table tbody tr:nth-child(even) {
   background: var(--rw-neutral-10);
 }
-.rw-table tbody tr:hover {
-  background: #e8eff8;
+.rw-table tbody tr {
+  transition: background 0.1s;
 }
+.rw-table tbody tr:hover {
+  background: var(--rw-neutral-20);
+}
+/* Footer totals row */
 .rw-table tfoot td {
   font-weight: 700;
+  padding: 14px 16px;
   background: var(--rw-neutral-20);
-  border-top: 2px solid var(--rw-neutral-40);
+  border-top: 1px solid var(--rw-neutral-40);
   border-bottom: none;
   color: var(--rw-text);
+  font-size: 13px;
+}
+/* Description column — secondary color, slightly smaller */
+.rw-table td:last-child {
+  color: var(--rw-text-secondary);
   font-size: 12px;
 }
 .rw-num {
   text-align: right;
   font-variant-numeric: tabular-nums;
   font-family: var(--rw-mono);
-  font-size: 12px;
+  font-size: 13px;
 }
 .rw-foot-label {
   text-align: right;
 }
 .rw-mono {
   font-family: var(--rw-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--rw-slate-150);
 }
 
-/* ── Inline tags ── */
+/* ── Inline tags — Redwood pill style ── */
 .rw-hofi-tag {
   display: inline-block;
-  padding: 1px 6px;
-  border-radius: 3px;
-  background: var(--rw-neutral-30);
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: var(--rw-slate-150);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--rw-accent-teal);
-  border: 1px solid var(--rw-neutral-40);
+  letter-spacing: 0.06em;
+  color: #ffffff;
 }
 .rw-status-tag {
   display: inline-block;
-  padding: 1px 8px;
-  border-radius: 3px;
-  font-size: 10px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.02em;
 }
 .rw-status-tag.applied {
-  background: #edf7ed;
-  color: var(--rw-accent-green);
-  border: 1px solid #c2e6c4;
+  background: var(--rw-accent-teal);
+  color: #ffffff;
 }
 .rw-status-tag.unapplied {
-  background: #fdf6e9;
-  color: var(--rw-accent-yellow);
-  border: 1px solid #f0dca0;
+  background: var(--rw-brand-yellow);
+  color: #ffffff;
 }
 
 /* ═══ FOOTER ═══════════════════════════════════════════════════════ */
