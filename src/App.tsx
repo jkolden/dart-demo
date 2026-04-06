@@ -232,6 +232,28 @@ function App() {
       )}
 
       <div className="rw-content">
+        {/* ── Action bar ── */}
+        <div className="rw-action-bar">
+          <div className="rw-lock-message">
+            {locked ? (
+              <>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
+                This deposit record is locked. The bank deposit cannot be selected by another preparer in DART.
+              </>
+            ) : (
+              <>Saving will create a record lock preventing duplicate access to this bank deposit.</>
+            )}
+          </div>
+          <div className="rw-action-buttons">
+            {locked && (
+              <button className="rw-btn rw-btn-ghost" onClick={handleUnlock}>Unlock (Demo)</button>
+            )}
+            <button className="rw-btn rw-btn-primary" onClick={handleSave} disabled={locked}>
+              {locked ? 'Batch Locked' : 'Save Batch & Lock Record'}
+            </button>
+          </div>
+        </div>
+
         {/* ── Standard Header ── */}
         <section className="rw-card">
           <div className="rw-card-header">
@@ -330,28 +352,6 @@ function App() {
             <p className="rw-hint">Showing bank accounts where Owning HOFI matches preparer HOFI ({fields.preparerHOFI}).</p>
           )}
         </section>
-
-        {/* ── Action bar ── */}
-        <div className="rw-action-bar">
-          <div className="rw-lock-message">
-            {locked ? (
-              <>
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
-                This deposit record is locked. The bank deposit cannot be selected by another preparer in DART.
-              </>
-            ) : (
-              <>Saving will create a record lock preventing duplicate access to this bank deposit.</>
-            )}
-          </div>
-          <div className="rw-action-buttons">
-            {locked && (
-              <button className="rw-btn rw-btn-ghost" onClick={handleUnlock}>Unlock (Demo)</button>
-            )}
-            <button className="rw-btn rw-btn-primary" onClick={handleSave} disabled={locked}>
-              {locked ? 'Batch Locked' : 'Save Batch & Lock Record'}
-            </button>
-          </div>
-        </div>
 
         {/* ── Tabs ── */}
         <section className="rw-card rw-card-flush">
