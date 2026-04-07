@@ -180,9 +180,7 @@ body { background: var(--rw-bg); }
   letter-spacing: 0.01em;
 }
 .rw-banner-badge.incomplete {
-  background: rgba(241,177,63,0.2);
-  color: #f1d89f;
-  border: 1px solid rgba(241,177,63,0.35);
+  background: #22373c;
 }
 .rw-banner-badge.complete {
   background: rgba(26,124,55,0.25);
