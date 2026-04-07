@@ -366,6 +366,7 @@ body { background: var(--rw-bg); }
   border-radius: 0;
   padding: 0;
   font-size: 13px;
+  font-family: inherit;
   color: var(--rw-text);
   background: transparent;
   outline: none;
