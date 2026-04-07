@@ -229,21 +229,6 @@ function DartApp() {
 
   return (
     <div className="rw-shell">
-      {/* ── Global nav bar ── */}
-      <nav className="rw-nav">
-        <div className="rw-nav-left">
-          <span className="rw-nav-hamburger">&#9776;</span>
-          <span className="rw-nav-title">Oracle Cloud</span>
-          <span className="rw-nav-divider" />
-          <span className="rw-nav-module">Cash Management</span>
-        </div>
-        <div className="rw-nav-right">
-          <span className="rw-nav-item">Notifications</span>
-          <span className="rw-nav-item">Settings</span>
-          <span className="rw-nav-avatar">{fields.preparerName.split(' ').map(n => n[0]).join('')}</span>
-        </div>
-      </nav>
-
       {/* ── Page banner (Fusion style — teal bg, inline actions) ── */}
       <header className="rw-banner">
         <div className="rw-banner-left">
