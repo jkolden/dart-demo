@@ -283,7 +283,6 @@ body { background: var(--rw-bg); }
   flex-direction: column;
   gap: 28px;
   background: var(--rw-surface);
-  border-radius: 10px 10px 0 0;
   box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
   min-height: calc(100vh - 200px);
   position: relative;
