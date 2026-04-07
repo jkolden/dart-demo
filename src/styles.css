@@ -729,11 +729,10 @@ body { background: var(--rw-bg); }
   justify-content: flex-start;
   gap: 0;
   padding: 0 16px;
-  background: var(--rw-surface);
+  background: #f0eeef;
   border-top: 1px solid var(--rw-neutral-40);
-  position: sticky;
-  bottom: 0;
-  z-index: 90;
+  margin: auto -48px -48px;
+  padding: 0 16px;
 }
 .rw-bottom-nav-item {
   display: inline-flex;
