@@ -571,9 +571,6 @@ function DartApp() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
           Analytics
         </span>
-        <span className="rw-bottom-nav-oracle">
-          <svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="11" fill="#c74634"/><text x="12" y="16" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="700">O</text></svg>
-        </span>
       </nav>
     </div>
   );
