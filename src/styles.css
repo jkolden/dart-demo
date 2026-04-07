@@ -147,7 +147,7 @@ body { background: var(--rw-bg); }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 28px;
+  padding: 38px 28px;
   background: #37677d;
   color: #ffffff;
 }
