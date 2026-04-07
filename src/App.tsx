@@ -244,46 +244,31 @@ function DartApp() {
         </div>
       </nav>
 
-      {/* ── Page header ── */}
-      <header className="rw-page-header">
-        <div className="rw-page-header-left">
-          <div className="rw-breadcrumb">
-            <span>Cash Management</span>
-            <span className="rw-bc-sep">/</span>
-            <span>DART Batches</span>
-            <span className="rw-bc-sep">/</span>
-            <span className="rw-bc-active">Deposit Swept Cash ZBA</span>
+      {/* ── Page banner (Fusion style — teal bg, inline actions) ── */}
+      <header className="rw-banner">
+        <div className="rw-banner-left">
+          <h1 className="rw-banner-title">DART Deposit Batch #{fields.batchNumber.replace('DART-', '')}</h1>
+          <div className="rw-banner-meta">
+            <span className={`rw-banner-badge ${fields.batchStatus === 'Complete' ? 'complete' : 'incomplete'}`}>
+              {fields.batchStatus}
+            </span>
+            <span>{fields.preparerName}</span>
+            <span>{fields.createdDate}</span>
           </div>
-          <h1 className="rw-page-title">
-            DART Deposit Batch
-            <span className="rw-batch-id">{fields.batchNumber}</span>
-          </h1>
-          <p className="rw-page-subtitle">
-            County of San Diego — Deposit, Accounts Receivables, Reallocations & Transfers
-          </p>
         </div>
-        <div className="rw-page-header-right">
-          <div className={`rw-lock-badge ${locked ? 'locked' : 'unlocked'}`}>
-            <svg className="rw-lock-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              {locked ? (
-                <>
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                  <path d="M7 11V7a5 5 0 0110 0v4" />
-                </>
-              ) : (
-                <>
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                  <path d="M7 11V7a5 5 0 019.9-1" />
-                </>
-              )}
-            </svg>
-            <span>{locked ? 'Record Locked' : 'No Lock'}</span>
-          </div>
-          <div className={`rw-status-chip ${fields.batchStatus === 'Complete' ? 'complete' : 'incomplete'}`}>
-            {fields.batchStatus}
-          </div>
+        <div className="rw-banner-actions">
+          {locked && (
+            <button className="rw-btn rw-btn-text" onClick={handleUnlock}>Unlock</button>
+          )}
+          <button className="rw-btn rw-btn-text" onClick={() => setFields(initialState)} disabled={locked}>Cancel</button>
+          <button className="rw-btn rw-btn-outlined" onClick={handleSave} disabled={locked}>
+            {locked ? 'Locked' : 'Save & Lock'}
+          </button>
         </div>
       </header>
+
+      {/* ── Redwood decorative stripe ── */}
+      <div className="rw-stripe" />
 
       {/* ── Toast notification ── */}
       {showLockToast && (
@@ -302,98 +287,59 @@ function DartApp() {
       )}
 
       <div className="rw-content">
-        {/* ── Action bar ── */}
-        <div className="rw-action-bar">
-          <div className="rw-lock-message">
-            {locked ? (
-              <>
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
-                This deposit record is locked. The bank deposit cannot be selected by another preparer in DART.
-              </>
-            ) : (
-              <>Saving will create a record lock preventing duplicate access to this bank deposit.</>
-            )}
-          </div>
-          <div className="rw-action-buttons">
-            {locked && (
-              <button className="rw-btn rw-btn-ghost" onClick={handleUnlock}>Unlock (Demo)</button>
-            )}
-            <button className="rw-btn rw-btn-primary" onClick={handleSave} disabled={locked}>
-              {locked ? 'Batch Locked' : 'Save Batch & Lock Record'}
-            </button>
-          </div>
+        {/* ── Batch information ── */}
+        <h2 className="rw-section-title">Batch information</h2>
+        <div className="rw-form-grid rw-form-grid-3">
+          <label className="rw-field">
+            <span className="rw-label">Batch Category</span>
+            <select className="rw-select" value={fields.batchCategory} onChange={e => handleChange('batchCategory', e.target.value)} disabled={locked}>
+              {batchCategories.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </label>
+          <label className="rw-field">
+            <span className="rw-label">Batch Type</span>
+            <select className="rw-select" value={fields.batchType} onChange={e => handleChange('batchType', e.target.value)} disabled={locked}>
+              {currentBatchTypes.map(t => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </label>
+          <label className="rw-field">
+            <span className="rw-label">Batch Status</span>
+            <select className="rw-select" value={fields.batchStatus} onChange={e => handleChange('batchStatus', e.target.value)} disabled={locked}>
+              {batchStatuses.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </label>
+          <label className="rw-field rw-span-2">
+            <span className="rw-label">Batch Name</span>
+            <input className="rw-input" value={fields.batchName} onChange={e => handleChange('batchName', e.target.value)} readOnly={locked} />
+          </label>
+          <label className="rw-field">
+            <span className="rw-label">Workflow Status</span>
+            <select className="rw-select" value={fields.workflowStatus} onChange={e => handleChange('workflowStatus', e.target.value)} disabled={locked}>
+              {workflowStates.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </label>
+          <label className="rw-field">
+            <span className="rw-label">Preparer Organization</span>
+            <select className="rw-select" value={fields.preparerOrganization} onChange={e => handleChange('preparerOrganization', e.target.value)} disabled={locked}>
+              {organizations.map(o => <option key={o.code} value={o.code}>{o.label}</option>)}
+            </select>
+          </label>
+          <label className="rw-field">
+            <span className="rw-label">Preparer Name</span>
+            <select className="rw-select" value={fields.preparerName} onChange={e => handleChange('preparerName', e.target.value)} disabled={locked}>
+              {currentPreparers.map(p => <option key={p} value={p}>{p}</option>)}
+            </select>
+          </label>
+          <label className="rw-field">
+            <span className="rw-label">Preparer HOFI</span>
+            <input className="rw-input rw-hofi" value={fields.preparerHOFI} onChange={e => handleChange('preparerHOFI', e.target.value)} readOnly={locked} />
+          </label>
         </div>
 
-        {/* ── Standard Header ── */}
-        <section className="rw-card">
-          <div className="rw-card-header">
-            <h2>Standard Header</h2>
-            <span className="rw-card-badge">Batch Entry</span>
-          </div>
-          <div className="rw-form-grid rw-form-grid-3">
-            <label className="rw-field">
-              <span className="rw-label">Batch Number</span>
-              <input className="rw-input" value={fields.batchNumber} readOnly />
-            </label>
-            <label className="rw-field">
-              <span className="rw-label">Batch Category</span>
-              <select className="rw-select" value={fields.batchCategory} onChange={e => handleChange('batchCategory', e.target.value)} disabled={locked}>
-                {batchCategories.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
-            </label>
-            <label className="rw-field">
-              <span className="rw-label">Batch Type</span>
-              <select className="rw-select" value={fields.batchType} onChange={e => handleChange('batchType', e.target.value)} disabled={locked}>
-                {currentBatchTypes.map(t => <option key={t} value={t}>{t}</option>)}
-              </select>
-            </label>
-            <label className="rw-field rw-span-2">
-              <span className="rw-label">Batch Name</span>
-              <input className="rw-input" value={fields.batchName} onChange={e => handleChange('batchName', e.target.value)} readOnly={locked} />
-            </label>
-            <label className="rw-field">
-              <span className="rw-label">Created Date</span>
-              <input className="rw-input" type="date" value={fields.createdDate} onChange={e => handleChange('createdDate', e.target.value)} readOnly={locked} />
-            </label>
-            <label className="rw-field">
-              <span className="rw-label">Preparer Organization</span>
-              <select className="rw-select" value={fields.preparerOrganization} onChange={e => handleChange('preparerOrganization', e.target.value)} disabled={locked}>
-                {organizations.map(o => <option key={o.code} value={o.code}>{o.label}</option>)}
-              </select>
-            </label>
-            <label className="rw-field">
-              <span className="rw-label">Preparer Name</span>
-              <select className="rw-select" value={fields.preparerName} onChange={e => handleChange('preparerName', e.target.value)} disabled={locked}>
-                {currentPreparers.map(p => <option key={p} value={p}>{p}</option>)}
-              </select>
-            </label>
-            <label className="rw-field">
-              <span className="rw-label">Preparer HOFI</span>
-              <input className="rw-input rw-hofi" value={fields.preparerHOFI} onChange={e => handleChange('preparerHOFI', e.target.value)} readOnly={locked} />
-            </label>
-            <label className="rw-field">
-              <span className="rw-label">Batch Status</span>
-              <select className="rw-select" value={fields.batchStatus} onChange={e => handleChange('batchStatus', e.target.value)} disabled={locked}>
-                {batchStatuses.map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </label>
-            <label className="rw-field">
-              <span className="rw-label">Workflow Status</span>
-              <select className="rw-select" value={fields.workflowStatus} onChange={e => handleChange('workflowStatus', e.target.value)} disabled={locked}>
-                {workflowStates.map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </label>
-          </div>
-        </section>
-
-        {/* ── Context + Distribution side-by-side ── */}
+        {/* ── Bank deposit context + chart ── */}
         <div className="rw-two-col">
-          {/* ── Context Header (Bank Info) ── */}
-          <section className="rw-card">
-            <div className="rw-card-header">
-              <h2>Bank Deposit Context</h2>
-              <span className="rw-card-badge">HOFI-Restricted</span>
-            </div>
+          <div>
+            <h2 className="rw-section-title">Bank deposit context</h2>
             <div className="rw-form-grid rw-form-grid-2">
               <label className="rw-field rw-span-2">
                 <span className="rw-label">Bank Name</span>
@@ -423,19 +369,14 @@ function DartApp() {
             {matchingBanks.length > 0 && !locked && (
               <p className="rw-hint">Showing bank accounts where Owning HOFI matches preparer HOFI ({fields.preparerHOFI}).</p>
             )}
-          </section>
+          </div>
 
-          {/* ── Distribution Chart ── */}
-          <section className="rw-card rw-chart-card">
-            <div className="rw-card-header">
-              <h2>Deposit Distribution</h2>
-              <span className="rw-card-badge">Multi-Module</span>
-            </div>
+          {/* ── Distribution chart ── */}
+          <div>
+            <h2 className="rw-section-title">Deposit distribution</h2>
             <div className="rw-chart-layout">
               <svg viewBox="0 0 100 100" className="rw-donut">
-                {/* background ring */}
                 <circle cx="50" cy="50" r="40" fill="none" stroke="#e6e2de" strokeWidth="12" />
-                {/* data arcs */}
                 {donutArcs.map(arc => (
                   <circle
                     key={arc.label}
@@ -450,7 +391,6 @@ function DartApp() {
                     className="rw-donut-arc"
                   />
                 ))}
-                {/* center text */}
                 <text x="50" y="47" textAnchor="middle" className="rw-donut-total-label">Total</text>
                 <text x="50" y="57" textAnchor="middle" className="rw-donut-total-value">
                   {usd(glTotal + pngTotal + arTotal)}
@@ -469,186 +409,171 @@ function DartApp() {
                 ))}
               </div>
             </div>
-            <p className="rw-hint">DART provides a single point of entry interfacing with GL, Projects &amp; Grants, and Accounts Receivables.</p>
-          </section>
+          </div>
         </div>
 
-        {/* ── Tabs ── */}
-        <section className="rw-card rw-card-flush">
-          <div className="rw-tabs">
-            {(['GL Lines', 'PNG Lines', 'AR Receipt Lines'] as const).map(tab => (
-              <button
-                key={tab}
-                className={`rw-tab ${tab === activeTab ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab}
-                <span className="rw-tab-count">
-                  {tab === 'GL Lines' ? glLines.length : tab === 'PNG Lines' ? pngLines.length : arLines.length}
-                </span>
-              </button>
-            ))}
-          </div>
+        {/* ── Line tabs ── */}
+        <h2 className="rw-section-title">Distribution lines</h2>
+        <div className="rw-tabs">
+          {(['GL Lines', 'PNG Lines', 'AR Receipt Lines'] as const).map(tab => (
+            <button
+              key={tab}
+              className={`rw-tab ${tab === activeTab ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+              <span className="rw-tab-count">
+                {tab === 'GL Lines' ? glLines.length : tab === 'PNG Lines' ? pngLines.length : arLines.length}
+              </span>
+            </button>
+          ))}
+        </div>
 
-          <div className="rw-tab-panel">
-            {activeTab === 'GL Lines' && (
-              <>
-                <div className="rw-table-toolbar">
-                  <span className="rw-table-title">General Ledger Distribution Lines</span>
-                  <span className="rw-row-count">{glLines.length} rows</span>
-                </div>
-                <div className="rw-table-wrap">
-                  <table className="rw-table">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Fund</th>
-                        <th>Budget Ref</th>
-                        <th>Dept</th>
-                        <th>Account</th>
-                        <th>Program</th>
-                        <th>Funding Src</th>
-                        <th>Project</th>
-                        <th>Class</th>
-                        <th className="rw-num">Debit</th>
-                        <th className="rw-num">Credit</th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {glLines.map(l => (
-                        <tr key={l.id}>
-                          <td>{l.id}</td>
-                          <td>{l.fund}</td>
-                          <td>{l.budgetRef}</td>
-                          <td>{l.dept}</td>
-                          <td>{l.account}</td>
-                          <td>{l.program}</td>
-                          <td>{l.fundingSrc}</td>
-                          <td>{l.project}</td>
-                          <td>{l.class}</td>
-                          <td className="rw-num">{l.debit > 0 ? usd(l.debit) : '—'}</td>
-                          <td className="rw-num">{l.credit > 0 ? usd(l.credit) : '—'}</td>
-                          <td>{l.description}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <td colSpan={9} className="rw-foot-label">Block Total</td>
-                        <td className="rw-num">{usd(glLines.reduce((s, l) => s + l.debit, 0))}</td>
-                        <td className="rw-num">{usd(glLines.reduce((s, l) => s + l.credit, 0))}</td>
-                        <td>Net: {usd(glTotal)}</td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              </>
-            )}
+        <div className="rw-tab-panel">
+          {activeTab === 'GL Lines' && (
+            <div className="rw-table-wrap">
+              <table className="rw-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Fund</th>
+                    <th>Budget Ref</th>
+                    <th>Dept</th>
+                    <th>Account</th>
+                    <th>Program</th>
+                    <th>Funding Src</th>
+                    <th>Project</th>
+                    <th>Class</th>
+                    <th className="rw-num">Debit</th>
+                    <th className="rw-num">Credit</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {glLines.map(l => (
+                    <tr key={l.id}>
+                      <td>{l.id}</td>
+                      <td>{l.fund}</td>
+                      <td>{l.budgetRef}</td>
+                      <td>{l.dept}</td>
+                      <td>{l.account}</td>
+                      <td>{l.program}</td>
+                      <td>{l.fundingSrc}</td>
+                      <td>{l.project}</td>
+                      <td>{l.class}</td>
+                      <td className="rw-num">{l.debit > 0 ? usd(l.debit) : '—'}</td>
+                      <td className="rw-num">{l.credit > 0 ? usd(l.credit) : '—'}</td>
+                      <td>{l.description}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan={9} className="rw-foot-label">Block Total</td>
+                    <td className="rw-num">{usd(glLines.reduce((s, l) => s + l.debit, 0))}</td>
+                    <td className="rw-num">{usd(glLines.reduce((s, l) => s + l.credit, 0))}</td>
+                    <td>Net: {usd(glTotal)}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          )}
 
-            {activeTab === 'PNG Lines' && (
-              <>
-                <div className="rw-table-toolbar">
-                  <span className="rw-table-title">Projects & Grants (POETA) Lines</span>
-                  <span className="rw-row-count">{pngLines.length} rows</span>
-                </div>
-                <div className="rw-table-wrap">
-                  <table className="rw-table">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Project</th>
-                        <th>Task</th>
-                        <th>Exp Type</th>
-                        <th>Exp Org</th>
-                        <th>Contract</th>
-                        <th>Funding Source</th>
-                        <th>HOFI</th>
-                        <th className="rw-num">Amount</th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {pngLines.map(l => (
-                        <tr key={l.id}>
-                          <td>{l.id}</td>
-                          <td>{l.project}</td>
-                          <td>{l.task}</td>
-                          <td>{l.expenditureType}</td>
-                          <td>{l.expenditureOrg}</td>
-                          <td>{l.contract}</td>
-                          <td>{l.fundingSource}</td>
-                          <td><span className="rw-hofi-tag">{l.hofi}</span></td>
-                          <td className="rw-num">{usd(l.amount)}</td>
-                          <td>{l.description}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <td colSpan={8} className="rw-foot-label">Total</td>
-                        <td className="rw-num">{usd(pngTotal)}</td>
-                        <td />
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              </>
-            )}
+          {activeTab === 'PNG Lines' && (
+            <div className="rw-table-wrap">
+              <table className="rw-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Project</th>
+                    <th>Task</th>
+                    <th>Exp Type</th>
+                    <th>Exp Org</th>
+                    <th>Contract</th>
+                    <th>Funding Source</th>
+                    <th>HOFI</th>
+                    <th className="rw-num">Amount</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pngLines.map(l => (
+                    <tr key={l.id}>
+                      <td>{l.id}</td>
+                      <td>{l.project}</td>
+                      <td>{l.task}</td>
+                      <td>{l.expenditureType}</td>
+                      <td>{l.expenditureOrg}</td>
+                      <td>{l.contract}</td>
+                      <td>{l.fundingSource}</td>
+                      <td><span className="rw-hofi-tag">{l.hofi}</span></td>
+                      <td className="rw-num">{usd(l.amount)}</td>
+                      <td>{l.description}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan={8} className="rw-foot-label">Total</td>
+                    <td className="rw-num">{usd(pngTotal)}</td>
+                    <td />
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          )}
 
-            {activeTab === 'AR Receipt Lines' && (
-              <>
-                <div className="rw-table-toolbar">
-                  <span className="rw-table-title">Accounts Receivable Receipts</span>
-                  <span className="rw-row-count">{arLines.length} rows</span>
-                </div>
-                <div className="rw-table-wrap">
-                  <table className="rw-table">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Receipt Number</th>
-                        <th>Customer</th>
-                        <th className="rw-num">Amount</th>
-                        <th>Receipt Date</th>
-                        <th>Status</th>
-                        <th>DART Batch</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {arLines.map(l => (
-                        <tr key={l.id}>
-                          <td>{l.id}</td>
-                          <td className="rw-mono">{l.receiptNumber}</td>
-                          <td>{l.customer}</td>
-                          <td className="rw-num">{usd(l.amount)}</td>
-                          <td>{l.receiptDate}</td>
-                          <td><span className={`rw-status-tag ${l.status === 'Applied' ? 'applied' : 'unapplied'}`}>{l.status}</span></td>
-                          <td className="rw-mono">{l.dartBatch}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <td colSpan={3} className="rw-foot-label">Total Receipts</td>
-                        <td className="rw-num">{usd(arTotal)}</td>
-                        <td colSpan={3} />
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-                <p className="rw-hint">DART Batch number is incorporated into the AR Receipt number for traceability between bank deposit, DART batch, and AR receipt.</p>
-              </>
-            )}
-          </div>
-        </section>
+          {activeTab === 'AR Receipt Lines' && (
+            <div className="rw-table-wrap">
+              <table className="rw-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Receipt Number</th>
+                    <th>Customer</th>
+                    <th className="rw-num">Amount</th>
+                    <th>Receipt Date</th>
+                    <th>Status</th>
+                    <th>DART Batch</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {arLines.map(l => (
+                    <tr key={l.id}>
+                      <td>{l.id}</td>
+                      <td>{l.receiptNumber}</td>
+                      <td>{l.customer}</td>
+                      <td className="rw-num">{usd(l.amount)}</td>
+                      <td>{l.receiptDate}</td>
+                      <td><span className={`rw-status-tag ${l.status === 'Applied' ? 'applied' : 'unapplied'}`}>{l.status}</span></td>
+                      <td>{l.dartBatch}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan={3} className="rw-foot-label">Total Receipts</td>
+                    <td className="rw-num">{usd(arTotal)}</td>
+                    <td colSpan={3} />
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* ── Footer ── */}
-      <footer className="rw-footer">
-        <span>DART Deposit Batch Demo — County of San Diego</span>
-        <span>Interactive Prototype &middot; Not for Production Use</span>
-      </footer>
+      {/* ── Bottom nav bar (Fusion style) ── */}
+      <nav className="rw-bottom-nav">
+        <span className="rw-bottom-nav-item">Home</span>
+        <span className="rw-bottom-nav-item active">DART</span>
+        <span className="rw-bottom-nav-item">Batches</span>
+        <span className="rw-bottom-nav-item">Reports</span>
+        <span className="rw-bottom-nav-item">Analytics</span>
+        <span className="rw-bottom-nav-oracle">
+          <svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="11" fill="#c74634"/><text x="12" y="16" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="700">O</text></svg>
+        </span>
+      </nav>
     </div>
   );
 }
