@@ -148,7 +148,7 @@ body { background: var(--rw-bg); }
   justify-content: space-between;
   align-items: center;
   padding: 18px 28px;
-  background: var(--rw-slate-150);
+  background: #37677d;
   color: #ffffff;
 }
 .rw-banner-left {
