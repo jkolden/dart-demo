@@ -270,8 +270,6 @@ function DartApp() {
         </div>
       </header>
 
-      {/* ── Redwood decorative stripe ── */}
-      <div className="rw-stripe" />
 
       {/* ── Toast notification ── */}
       {showLockToast && (
