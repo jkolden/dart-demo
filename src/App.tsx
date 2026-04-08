@@ -472,7 +472,6 @@ function DartApp() {
                     <th>Exp Org</th>
                     <th>Contract</th>
                     <th>Funding Source</th>
-                    <th>HOFI</th>
                     <th className="rw-num">Amount</th>
                     <th>Description</th>
                   </tr>
@@ -487,7 +486,6 @@ function DartApp() {
                       <td>{l.expenditureOrg}</td>
                       <td>{l.contract}</td>
                       <td>{l.fundingSource}</td>
-                      <td><span className="rw-hofi-tag">{l.hofi}</span></td>
                       <td className="rw-num">{usd(l.amount)}</td>
                       <td>{l.description}</td>
                     </tr>
@@ -495,7 +493,7 @@ function DartApp() {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan={8} className="rw-foot-label">Total</td>
+                    <td colSpan={7} className="rw-foot-label">Total</td>
                     <td className="rw-num">{usd(pngTotal)}</td>
                     <td />
                   </tr>
