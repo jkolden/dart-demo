@@ -100,11 +100,11 @@ const workflowStates = ['Not Submitted', 'Submitted', 'Awaiting HOFI Approval', 
 
 /* ─── Mock GL lines (7-segment CoA: Fund-BudgetRef-Dept-Account-Program-FundingSrc-Project) ── */
 const glLines = [
-  { id: 1, fund: '1010', budgetRef: '0000', dept: '15675', account: '47535', program: '0000', fundingSrc: '0000', project: '00000000', debit: 0, credit: 45000.00, class: 'Confirmed cash', description: 'State Public Health Reimbursement' },
-  { id: 2, fund: '1010', budgetRef: '0000', dept: '14565', account: '47535', program: '1200', fundingSrc: '3100', project: '00000000', debit: 0, credit: 25000.00, class: 'Confirmed cash', description: 'Federal Housing Authority Grant' },
-  { id: 3, fund: '6114', budgetRef: '0000', dept: '00000', account: '80100', program: '0000', fundingSrc: '2001', project: 'PRG10042', debit: 15000.00, credit: 0, class: 'Applied cash', description: 'Capital Improvement — Road Resurfacing' },
-  { id: 4, fund: '1010', budgetRef: '2026', dept: '15675', account: '47200', program: '0000', fundingSrc: '0000', project: '00000000', debit: 0, credit: 22550.70, class: 'Receivable', description: 'Permit Fee Collections — March' },
-  { id: 5, fund: '2030', budgetRef: '2026', dept: '16890', account: '48100', program: '2100', fundingSrc: '3200', project: 'PRG20014', debit: 0, credit: 12000.00, class: 'Confirmed cash', description: 'Behavioral Health Services Revenue' },
+  { id: 1, fund: '1010', budgetRef: '0000', dept: '15675', account: '47535', program: '0000', fundingSrc: '0000', project: '00000000', amount: 45000.00, description: 'State Public Health Reimbursement' },
+  { id: 2, fund: '1010', budgetRef: '0000', dept: '14565', account: '47535', program: '1200', fundingSrc: '3100', project: '00000000', amount: 25000.00, description: 'Federal Housing Authority Grant' },
+  { id: 3, fund: '6114', budgetRef: '0000', dept: '00000', account: '80100', program: '0000', fundingSrc: '2001', project: 'PRG10042', amount: 15000.00, description: 'Capital Improvement — Road Resurfacing' },
+  { id: 4, fund: '1010', budgetRef: '2026', dept: '15675', account: '47200', program: '0000', fundingSrc: '0000', project: '00000000', amount: 22550.70, description: 'Permit Fee Collections — March' },
+  { id: 5, fund: '2030', budgetRef: '2026', dept: '16890', account: '48100', program: '2100', fundingSrc: '3200', project: 'PRG20014', amount: 12000.00, description: 'Behavioral Health Services Revenue' },
 ];
 
 /* ─── Mock PNG lines (POETA: Project-Task-ExpType-ExpOrg-Contract-FundingSrc) ── */
@@ -164,7 +164,7 @@ function DartApp() {
   const matchingBanks = bankAccounts.filter(b => b.hofi === fields.preparerHOFI);
   const hofiMismatch = fields.preparerHOFI !== fields.preparerOrganization;
 
-  const glTotal = useMemo(() => glLines.reduce((s, l) => s + l.credit - l.debit, 0), []);
+  const glTotal = useMemo(() => glLines.reduce((s, l) => s + l.amount, 0), []);
   const pngTotal = useMemo(() => pngLines.reduce((s, l) => s + l.amount, 0), []);
   const arTotal = useMemo(() => arLines.reduce((s, l) => s + l.amount, 0), []);
 
@@ -429,9 +429,7 @@ function DartApp() {
                     <th>Program</th>
                     <th>Funding Src</th>
                     <th>Project</th>
-                    <th>Class</th>
-                    <th className="rw-num">Debit</th>
-                    <th className="rw-num">Credit</th>
+                    <th className="rw-num">Amount</th>
                     <th>Description</th>
                   </tr>
                 </thead>
@@ -446,19 +444,16 @@ function DartApp() {
                       <td>{l.program}</td>
                       <td>{l.fundingSrc}</td>
                       <td>{l.project}</td>
-                      <td>{l.class}</td>
-                      <td className="rw-num">{l.debit > 0 ? usd(l.debit) : '—'}</td>
-                      <td className="rw-num">{l.credit > 0 ? usd(l.credit) : '—'}</td>
+                      <td className="rw-num">{usd(l.amount)}</td>
                       <td>{l.description}</td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan={9} className="rw-foot-label">Block Total</td>
-                    <td className="rw-num">{usd(glLines.reduce((s, l) => s + l.debit, 0))}</td>
-                    <td className="rw-num">{usd(glLines.reduce((s, l) => s + l.credit, 0))}</td>
-                    <td>Net: {usd(glTotal)}</td>
+                    <td colSpan={8} className="rw-foot-label">Total</td>
+                    <td className="rw-num">{usd(glTotal)}</td>
+                    <td />
                   </tr>
                 </tfoot>
               </table>
